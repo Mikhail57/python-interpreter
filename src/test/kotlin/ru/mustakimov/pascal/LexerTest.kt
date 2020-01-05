@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import ru.mustakimov.pascal.exception.UnknownTokenException
+import ru.mustakimov.pascal.token.CommonTokens
 import ru.mustakimov.pascal.token.Token
 import ru.mustakimov.pascal.token.TokenType
 
@@ -92,6 +93,44 @@ internal class LexerTest {
         assertThrows(UnknownTokenException::class.java) {
             lexer.nextToken()
         }
+    }
+
+    @Test
+    fun `Should handle basic pascal program`() {
+        val text = "BEGIN END."
+        val lexer = Lexer(text)
+        assertEquals(CommonTokens.BEGIN, lexer.nextToken())
+        assertEquals(CommonTokens.END, lexer.nextToken())
+        assertEquals(CommonTokens.DOT, lexer.nextToken())
+        assertEquals(CommonTokens.EOF, lexer.nextToken())
+    }
+
+    @Test
+    fun `Should handle basic pascal program with one assignment`() {
+        val text = "BEGIN a := 2; END."
+        val lexer = Lexer(text)
+        assertEquals(CommonTokens.BEGIN, lexer.nextToken())
+        assertEquals(Token(TokenType.ID, "a"), lexer.nextToken())
+        assertEquals(CommonTokens.ASSIGN, lexer.nextToken())
+        assertEquals(Token(TokenType.INTEGER, "2"), lexer.nextToken())
+        assertEquals(CommonTokens.SEMI, lexer.nextToken())
+        assertEquals(CommonTokens.END, lexer.nextToken())
+        assertEquals(CommonTokens.DOT, lexer.nextToken())
+        assertEquals(CommonTokens.EOF, lexer.nextToken())
+    }
+
+    @Test
+    fun `Should handle basic pascal program with multiple assignment`() {
+        val text = "BEGIN a := 2; END."
+        val lexer = Lexer(text)
+        assertEquals(CommonTokens.BEGIN, lexer.nextToken())
+        assertEquals(Token(TokenType.ID, "a"), lexer.nextToken())
+        assertEquals(CommonTokens.ASSIGN, lexer.nextToken())
+        assertEquals(Token(TokenType.INTEGER, "2"), lexer.nextToken())
+        assertEquals(CommonTokens.SEMI, lexer.nextToken())
+        assertEquals(CommonTokens.END, lexer.nextToken())
+        assertEquals(CommonTokens.DOT, lexer.nextToken())
+        assertEquals(CommonTokens.EOF, lexer.nextToken())
     }
 
 }

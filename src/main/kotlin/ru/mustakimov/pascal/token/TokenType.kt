@@ -12,10 +12,12 @@ enum class TokenType {
     LPAREN,
     RPAREN,
 
-    VAR,
+    ASSIGN,
+    ID,
+
+    PROGRAM,
     BEGIN,
     END,
-    PROGRAM,
 
     SEMI,
     DOT,
