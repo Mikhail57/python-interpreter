@@ -68,7 +68,7 @@ class Parser(
     }
 
     private fun expression(): Node {
-        var node = factor()
+        var node = term()
 
         while (currentToken.type == TokenType.PLUS || currentToken.type == TokenType.MINUS) {
             val token = currentToken
