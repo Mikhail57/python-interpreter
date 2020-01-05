@@ -1,6 +1,7 @@
 package ru.mustakimov.pascal
 
 import ru.mustakimov.pascal.exception.UnknownTokenException
+import ru.mustakimov.pascal.token.ReservedKeywords
 import ru.mustakimov.pascal.token.Token
 import ru.mustakimov.pascal.token.TokenType
 
@@ -8,8 +9,11 @@ class Lexer(
     private val text: String
 ) {
     private var currentPos: Int = 0
-    private val currentChar: Char?
-        get() = text.getOrNull(currentPos)
+    private var currentChar: Char? = text.getOrNull(currentPos)
+    //    private val currentChar: Char?
+//        get() = text.getOrNull(currentPos)
+    private val nextChar: Char?
+        get() = text.getOrNull(currentPos + 1)
 
     @Throws(UnknownTokenException::class)
     fun nextToken(): Token {
@@ -19,18 +23,20 @@ class Lexer(
                 skip()
                 continue
             }
-            if (char.isDigit()) {
-                return Token(TokenType.INTEGER, integer())
-            }
-            return when (char) {
-                '+' -> Token(TokenType.PLUS, "+")
-                '-' -> Token(TokenType.MINUS, "-")
-                '*' -> Token(TokenType.MUL, "*")
-                '/' -> Token(TokenType.DIV, "/")
-                '(' -> Token(TokenType.LPAREN, "(")
-                ')' -> Token(TokenType.RPAREN, ")")
+            return when {
+                char.isDigit() -> Token(TokenType.INTEGER, integer())
+                char.isLetter() -> id()
+                char == '+' -> Token(TokenType.PLUS, "+").also { forward() }
+                char == '-' -> Token(TokenType.MINUS, "-").also { forward() }
+                char == '*' -> Token(TokenType.MUL, "*").also { forward() }
+                char == '/' -> Token(TokenType.DIV, "/").also { forward() }
+                char == '(' -> Token(TokenType.LPAREN, "(").also { forward() }
+                char == ')' -> Token(TokenType.RPAREN, ")").also { forward() }
+                char == ';' -> Token(TokenType.SEMI, ";").also { forward() }
+                char == '.' -> Token(TokenType.DOT, ".").also { forward() }
+                char == ':' && nextChar == '=' -> Token(TokenType.ASSIGN, ":=").also { forward(); forward() }
                 else -> throw UnknownTokenException("Unknown token $char")
-            }.also { forward() }
+            }
         }
         return Token(TokenType.EOF, null)
     }
@@ -46,11 +52,26 @@ class Lexer(
 
     private fun forward() {
         currentPos++
+        currentChar = text.getOrNull(currentPos)
     }
 
     private fun skip() {
         while (currentChar?.isWhitespace() == true) {
             forward()
+        }
+    }
+
+    private fun id(): Token {
+        val titleBuilder = StringBuilder()
+        while (currentChar?.isLetter() == true) {
+            titleBuilder.append(currentChar!!)
+            forward()
+        }
+        val title = titleBuilder.toString()
+        return try {
+            ReservedKeywords.valueOf(title).token
+        } catch (e: IllegalArgumentException) {
+            Token(TokenType.ID, title)
         }
     }
 }
