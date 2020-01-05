@@ -6,7 +6,7 @@ import ru.mustakimov.pascal.node.Number
 import ru.mustakimov.pascal.node.UnaryOp
 import ru.mustakimov.pascal.token.TokenType
 
-class Interpreter(
+class Interpreter internal constructor(
     private val parser: Parser
 ) : NodeVisitor {
 
@@ -46,4 +46,7 @@ class Interpreter(
         }
     }
 
+    companion object {
+        fun newInstance(text: String): Interpreter = Interpreter(Parser(Lexer(text)))
+    }
 }

@@ -16,7 +16,7 @@ internal class ParserTest {
     fun `Should parse simple sum`() {
         val text = "1 + 2"
         val parser = Parser(Lexer(text))
-        val node = parser.parse()
+        val node = parser.expression()
         assertEquals(
             BinOp(
                 left = Number(Token(TokenType.INTEGER, "1")),
@@ -31,7 +31,7 @@ internal class ParserTest {
     fun `Should parse simple diff`() {
         val text = "10 - 2"
         val parser = Parser(Lexer(text))
-        val node = parser.parse()
+        val node = parser.expression()
         assertEquals(
             BinOp(
                 left = Number(Token(TokenType.INTEGER, "10")),
@@ -46,7 +46,7 @@ internal class ParserTest {
     fun `Should parse simple mult`() {
         val text = "10 * 2"
         val parser = Parser(Lexer(text))
-        val node = parser.parse()
+        val node = parser.expression()
         assertEquals(
             BinOp(
                 left = Number(Token(TokenType.INTEGER, "10")),
@@ -61,7 +61,7 @@ internal class ParserTest {
     fun `Should parse complex sum expression with parentheses`() {
         val text = "5 - - - + - (3 + 4) - +2"
         val parser = Parser(Lexer(text))
-        val node = parser.parse()
+        val node = parser.expression()
         assertEquals(
             BinOp(
                 left = BinOp(

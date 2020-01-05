@@ -1,21 +1,67 @@
 package ru.mustakimov.pascal
 
 import ru.mustakimov.pascal.exception.UnexpectedTokenException
-import ru.mustakimov.pascal.node.BinOp
-import ru.mustakimov.pascal.node.Node
-import ru.mustakimov.pascal.node.Number
-import ru.mustakimov.pascal.node.UnaryOp
+import ru.mustakimov.pascal.node.*
 import ru.mustakimov.pascal.token.Token
 import ru.mustakimov.pascal.token.TokenType
 
-class Parser(
+internal class Parser(
     private val lexer: Lexer
 ) {
     private var currentToken: Token = lexer.nextToken()
 
     fun parse(): Node {
-        return expression()
+        val node = program()
+        if (currentToken.type != TokenType.EOF)
+            throw UnexpectedTokenException("After dot there should be no meaning things")
+        return node
     }
+
+    private fun program(): Node {
+        val node = complexStatement()
+        eat(TokenType.DOT)
+        return node
+    }
+
+    private fun complexStatement(): Node {
+        eat(TokenType.BEGIN)
+        val nodes = statementList()
+        eat(TokenType.END)
+        return Block(nodes)
+    }
+
+    private fun statementList(): List<Node> {
+        val node = statement()
+        val result = mutableListOf(node)
+        while (currentToken.type == TokenType.SEMI) {
+            eat(TokenType.SEMI)
+            result += statement()
+        }
+        if (currentToken.type == TokenType.ID) {
+            throw UnexpectedTokenException("Unexpected variable ${currentToken.value}")
+        }
+        return result
+    }
+
+    private fun statement(): Node {
+        return when (currentToken.type) {
+            TokenType.BEGIN -> complexStatement()
+            TokenType.ID -> assigmentStatement()
+            else -> empty()
+        }
+    }
+
+    private fun assigmentStatement(): Node {
+        val left = variable()
+        val token = currentToken
+        eat(TokenType.ASSIGN)
+        val right = expression()
+        return Assign(left, right, token)
+    }
+
+    private fun variable(): Node = Var(currentToken).also { eat(TokenType.ID) }
+
+    private fun empty(): Node = NoOp()
 
     private fun eat(tokenType: TokenType) {
         if (currentToken.type == tokenType) {
@@ -46,7 +92,7 @@ class Parser(
                 eat(TokenType.RPAREN)
                 node
             }
-            else -> throw UnexpectedTokenException("Unexpected token")
+            else -> variable()
         }
     }
 
@@ -67,7 +113,7 @@ class Parser(
         return node
     }
 
-    private fun expression(): Node {
+    fun expression(): Node {
         var node = term()
 
         while (currentToken.type == TokenType.PLUS || currentToken.type == TokenType.MINUS) {
@@ -83,5 +129,4 @@ class Parser(
 
         return node
     }
-
 }
