@@ -1,6 +1,7 @@
 plugins {
     java
     kotlin("jvm") version "1.3.61"
+    jacoco
 }
 
 group = "ru.mustakimov.pascal"
@@ -29,5 +30,12 @@ tasks {
     }
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
+    }
+    jacocoTestReport {
+        reports {
+            xml.isEnabled = false
+            csv.isEnabled = false
+            html.destination = file("${buildDir}/jacocoHtml")
+        }
     }
 }
