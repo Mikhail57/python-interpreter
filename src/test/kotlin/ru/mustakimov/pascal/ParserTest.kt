@@ -3,6 +3,7 @@ package ru.mustakimov.pascal
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
+import ru.mustakimov.pascal.exception.UnexpectedTokenException
 import ru.mustakimov.pascal.node.*
 import ru.mustakimov.pascal.node.Number
 import ru.mustakimov.pascal.token.CommonTokens
@@ -83,6 +84,15 @@ internal class ParserTest {
             ),
             node
         )
+    }
+
+    @Test
+    fun `Should throw an exception on wrong pascal program`() {
+        val text = "BEGIN END. a := 5;"
+        val parser = Parser(Lexer(text))
+        assertThrows(UnexpectedTokenException::class.java) {
+            parser.parse()
+        }
     }
 
     @Test

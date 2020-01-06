@@ -96,6 +96,16 @@ internal class LexerTest {
     }
 
     @Test
+    fun `Should throw an exception on wrong program`() {
+        val text = "BEGIN : END."
+        val lexer = Lexer(text)
+        assertThrows(UnknownTokenException::class.java) {
+            lexer.nextToken()
+            lexer.nextToken()
+        }
+    }
+
+    @Test
     fun `Should handle basic pascal program`() {
         val text = "BEGIN END."
         val lexer = Lexer(text)
