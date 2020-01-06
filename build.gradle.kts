@@ -2,6 +2,7 @@ plugins {
     java
     kotlin("jvm") version "1.3.61"
     jacoco
+    application
 }
 
 group = "ru.mustakimov.pascal"
@@ -15,6 +16,10 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     testImplementation("org.junit.jupiter", "junit-jupiter", "5.5.2")
+}
+
+application {
+    mainClassName = "ru.mustakimov.pascal.MainKt"
 }
 
 tasks.withType<Test> {
