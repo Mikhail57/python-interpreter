@@ -1,27 +1,50 @@
 package ru.mustakimov.pascal
 
-import ru.mustakimov.pascal.node.BinOp
-import ru.mustakimov.pascal.node.Node
+import ru.mustakimov.pascal.exception.UndefinedVariableError
+import ru.mustakimov.pascal.node.*
 import ru.mustakimov.pascal.node.Number
-import ru.mustakimov.pascal.node.UnaryOp
 import ru.mustakimov.pascal.token.TokenType
 
 class Interpreter internal constructor(
     private val parser: Parser
 ) : NodeVisitor {
+    val variables: MutableMap<String, Float> = mutableMapOf()
 
-    fun interpret(): Float {
+    fun interpret() {
         val tree = parser.parse()
-        return visit(tree) as Float
+        visit(tree)
     }
 
-    override fun visit(node: Node): Any {
+    override fun visit(node: Node): Any? {
         return when (node) {
             is BinOp -> visitBinOp(node)
             is Number -> visitNumber(node)
             is UnaryOp -> visitUnaryOp(node)
+            is Block -> visitBlock(node)
+            is Assign -> visitAssign(node)
+            is Var -> visitVar(node)
+            is NoOp -> {
+            }
             else -> throw UnsupportedOperationException()
         }
+    }
+
+    private fun visitVar(node: Var): Any {
+        val variableName = node.value
+        return variables[variableName] ?: throw UndefinedVariableError(variableName)
+    }
+
+    private fun visitAssign(node: Assign): Any? {
+        val variableName = (node.left as Var).value
+        variables[variableName] = visit(node.right) as Float
+        return null
+    }
+
+    private fun visitBlock(node: Block): Any? {
+        for (child in node.children) {
+            visit(child)
+        }
+        return null
     }
 
     private fun visitUnaryOp(node: UnaryOp): Float {
