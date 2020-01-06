@@ -17,10 +17,9 @@ internal class ParserTest {
         val parser = Parser(Lexer(text))
         val node = parser.expression()
         assertEquals(
-            BinOp(
-                left = Number(Token(TokenType.INTEGER, "1")),
-                op = Token(TokenType.PLUS, "+"),
-                right = Number(Token(TokenType.INTEGER, "2"))
+            makePlus(
+                left = makeNumber("1"),
+                right = makeNumber("2")
             ),
             node
         )
@@ -32,10 +31,9 @@ internal class ParserTest {
         val parser = Parser(Lexer(text))
         val node = parser.expression()
         assertEquals(
-            BinOp(
-                left = Number(Token(TokenType.INTEGER, "10")),
-                op = Token(TokenType.MINUS, "-"),
-                right = Number(Token(TokenType.INTEGER, "2"))
+            makeMinus(
+                left = makeNumber("10"),
+                right = makeNumber("2")
             ),
             node
         )
@@ -47,10 +45,9 @@ internal class ParserTest {
         val parser = Parser(Lexer(text))
         val node = parser.expression()
         assertEquals(
-            BinOp(
-                left = Number(Token(TokenType.INTEGER, "10")),
-                op = Token(TokenType.MUL, "*"),
-                right = Number(Token(TokenType.INTEGER, "2"))
+            makeMul(
+                left = makeNumber("10"),
+                right = makeNumber("2")
             ),
             node
         )
@@ -62,43 +59,26 @@ internal class ParserTest {
         val parser = Parser(Lexer(text))
         val node = parser.expression()
         assertEquals(
-            BinOp(
-                left = BinOp(
-                    left = Number(Token(TokenType.INTEGER, "5")),
-                    op = Token(TokenType.MINUS, "-"),
-                    right = UnaryOp(
-                        CommonTokens.MINUS,
-                        UnaryOp(
-                            CommonTokens.MINUS,
+            makeMinus(
+                left = makeMinus(
+                    left = makeNumber("5"),
+                    right = makeUnaryMinus(
+                        makeUnaryMinus(
                             UnaryOp(
                                 CommonTokens.PLUS,
-                                UnaryOp(
-                                    CommonTokens.MINUS,
-                                    BinOp(
-                                        left = Number(
-                                            Token(
-                                                TokenType.INTEGER,
-                                                "3"
-                                            )
-                                        ),
-                                        op = CommonTokens.PLUS,
-                                        right = Number(
-                                            Token(
-                                                TokenType.INTEGER,
-                                                "4"
-                                            )
-                                        )
+                                makeUnaryMinus(
+                                    makePlus(
+                                        left = makeNumber(3),
+                                        right = makeNumber(4)
                                     )
                                 )
                             )
                         )
                     )
                 ),
-                op = Token(TokenType.MINUS, "-"),
                 right = UnaryOp(
-                    Token(TokenType.PLUS, "+"), Number(
-                        Token(TokenType.INTEGER, "2")
-                    )
+                    Token(TokenType.PLUS, "+"),
+                    makeNumber("2")
                 )
             ),
             node
