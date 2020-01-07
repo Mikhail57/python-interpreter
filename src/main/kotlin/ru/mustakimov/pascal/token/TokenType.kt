@@ -1,25 +1,62 @@
 package ru.mustakimov.pascal.token
 
 enum class TokenType {
+    /**
+     * Some number
+     */
     INTEGER,
-    REAL,
 
+    /**
+     * Plus (`+`)
+     */
     PLUS,
+    /**
+     * Minus (`-`)
+     */
     MINUS,
+    /**
+     * Multiplication (`*`)
+     */
     MUL,
+    /**
+     * Division (`/`)
+     */
     DIV,
 
+    /**
+     * Left parenthesis (`(`)
+     */
     LPAREN,
+    /**
+     * Right parenthesis (`)`)
+     */
     RPAREN,
 
+    /**
+     * Assign (`:=`)
+     */
     ASSIGN,
+    /**
+     * Some ID (usually variable name)
+     */
     ID,
 
-    PROGRAM,
+    /**
+     * `BEGIN` keyword
+     */
     BEGIN,
+    /**
+     * `END` keyword
+     */
     END,
 
+    /**
+     * Semicolon (`;`)
+     */
     SEMI,
+    /**
+     * Dot (`.`)
+     */
     DOT,
 
     /**
