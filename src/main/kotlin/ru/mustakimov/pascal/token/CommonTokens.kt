@@ -11,4 +11,6 @@ object CommonTokens {
     val DOT = Token(TokenType.DOT, ".")
     val SEMI = Token(TokenType.SEMI, ";")
     val ASSIGN = Token(TokenType.ASSIGN, ":=")
+    val LPAREN = Token(TokenType.LPAREN, "(")
+    val RPAREN = Token(TokenType.RPAREN, ")")
 }

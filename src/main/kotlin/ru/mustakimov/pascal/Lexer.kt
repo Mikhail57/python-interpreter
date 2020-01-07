@@ -1,6 +1,7 @@
 package ru.mustakimov.pascal
 
 import ru.mustakimov.pascal.exception.UnknownTokenException
+import ru.mustakimov.pascal.token.CommonTokens
 import ru.mustakimov.pascal.token.ReservedKeywords
 import ru.mustakimov.pascal.token.Token
 import ru.mustakimov.pascal.token.TokenType
@@ -10,8 +11,6 @@ class Lexer(
 ) {
     private var currentPos: Int = 0
     private var currentChar: Char? = text.getOrNull(currentPos)
-    //    private val currentChar: Char?
-//        get() = text.getOrNull(currentPos)
     private val nextChar: Char?
         get() = text.getOrNull(currentPos + 1)
 
@@ -26,15 +25,15 @@ class Lexer(
             return when {
                 char.isDigit() -> Token(TokenType.INTEGER, integer())
                 char.isLetter() -> id()
-                char == '+' -> Token(TokenType.PLUS, "+").also { forward() }
-                char == '-' -> Token(TokenType.MINUS, "-").also { forward() }
-                char == '*' -> Token(TokenType.MUL, "*").also { forward() }
-                char == '/' -> Token(TokenType.DIV, "/").also { forward() }
-                char == '(' -> Token(TokenType.LPAREN, "(").also { forward() }
-                char == ')' -> Token(TokenType.RPAREN, ")").also { forward() }
-                char == ';' -> Token(TokenType.SEMI, ";").also { forward() }
-                char == '.' -> Token(TokenType.DOT, ".").also { forward() }
-                char == ':' && nextChar == '=' -> Token(TokenType.ASSIGN, ":=").also { forward(); forward() }
+                char == '+' -> CommonTokens.PLUS.also { forward() }
+                char == '-' -> CommonTokens.MINUS.also { forward() }
+                char == '*' -> CommonTokens.MUL.also { forward() }
+                char == '/' -> CommonTokens.DIV.also { forward() }
+                char == '(' -> CommonTokens.LPAREN.also { forward() }
+                char == ')' -> CommonTokens.RPAREN.also { forward() }
+                char == ';' -> CommonTokens.SEMI.also { forward() }
+                char == '.' -> CommonTokens.DOT.also { forward() }
+                char == ':' && nextChar == '=' -> CommonTokens.ASSIGN.also { forward(); forward() }
                 else -> throw UnknownTokenException("Unknown token $char")
             }
         }
