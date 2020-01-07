@@ -53,10 +53,9 @@ internal class Parser(
 
     private fun assigmentStatement(): Node {
         val left = variable()
-        val token = currentToken
         eat(TokenType.ASSIGN)
         val right = expression()
-        return Assign(left, right, token)
+        return Assign(left, right)
     }
 
     private fun variable(): Node = Var(currentToken).also { eat(TokenType.ID) }
