@@ -1,4 +1,4 @@
-# Pascal Interpreter [![Build Status](https://travis-ci.org/Mikhail57/python-interpreter.svg?branch=master)](https://travis-ci.org/Mikhail57/python-interpreter)[![Test Coverage](https://api.codeclimate.com/v1/badges/b893bc42ebbefacb11dc/test_coverage)](https://codeclimate.com/github/Mikhail57/python-interpreter/test_coverage)[![Maintainability](https://api.codeclimate.com/v1/badges/b893bc42ebbefacb11dc/maintainability)](https://codeclimate.com/github/Mikhail57/python-interpreter/maintainability)
+# Pascal Interpreter [![Build Status](https://travis-ci.org/Mikhail57/python-interpreter.svg?branch=master)](https://travis-ci.org/Mikhail57/python-interpreter) [![Test Coverage](https://api.codeclimate.com/v1/badges/b893bc42ebbefacb11dc/test_coverage)](https://codeclimate.com/github/Mikhail57/python-interpreter/test_coverage) [![Maintainability](https://api.codeclimate.com/v1/badges/b893bc42ebbefacb11dc/maintainability)](https://codeclimate.com/github/Mikhail57/python-interpreter/maintainability)
 Interpreter for simplified version of Pascal programming language. Inspired by 
 [Let’s Build A Simple Interpreter](https://ruslanspivak.com/lsbasi-part1/) series.
 
