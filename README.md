@@ -1,4 +1,4 @@
-# Pascal Interpreter
+# Pascal Interpreter [![Build Status](https://travis-ci.org/Mikhail57/python-interpreter.svg?branch=master)](https://travis-ci.org/Mikhail57/python-interpreter)
 Interpreter for simplified version of Pascal programming language. Inspired by 
 [Let’s Build A Simple Interpreter](https://ruslanspivak.com/lsbasi-part1/) series.
 
