@@ -51,7 +51,7 @@ class Interpreter internal constructor(
         return when (node.token.type) {
             TokenType.MINUS -> -(visit(node.expr) as Float)
             TokenType.PLUS -> visit(node.expr) as Float
-            else -> throw UnknownError()
+            else -> throw UnsupportedOperationException()
         }
     }
 
